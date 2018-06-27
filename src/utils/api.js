@@ -33,7 +33,7 @@ export const getAllPosts = () =>
   fetch(`${api}/posts`, authHeader)
     .then(res => res.json());
 
-export const getPostByCategory = (category) => 
+export const getPostsByCategory = (category) => 
   fetch(`${api}/${category}/posts`, authHeader)
     .then(res => res.json());
 
@@ -52,6 +52,7 @@ export const getCommentById = (commentId) =>
 // POST methods
 
 export const addPost = (title, body, author, category) =>  {
+  console.log(title, body, author, category);
   let timeNow = Date.now();
   let uuid = category + timeNow;
   return fetch(`${api}/posts`, {
@@ -65,7 +66,8 @@ export const addPost = (title, body, author, category) =>  {
       author,
       category
     })
-  }).then(res => res.json());
+  })
+  .then(res => res.json());
 }
 
 export const addComment = (body, author, parentId) => {
@@ -91,7 +93,7 @@ export const voteOnPost = (id, option) =>
     body: JSON.stringify({ option })
   }).then(res => res.json());
 
-export const VoteOnComment = (id, option) => 
+export const voteOnComment = (id, option) => 
   fetch(`${api}/comments/${id}`, {
     method: 'POST',
     headers: authPostHeader,
@@ -140,6 +142,3 @@ export const deleteComment = (id) =>
       'Authorization': authToken
     },
   }).then(res => res.json());
-
-
-
