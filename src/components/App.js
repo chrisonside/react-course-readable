@@ -3,10 +3,7 @@ import { connect } from 'react-redux';
 import ReactLoading from 'react-loading';
 import Timestamp from 'react-timestamp';
 import '../App.css';
-// TO DO - maybe call individual api methods rather than whole thing
-// import * as API from '../utils/api';
-import Nav from './Nav';
-import ArticleList from './ArticleList';
+import Post from './Post';
 //
 import {
   getAllPosts,
@@ -22,9 +19,9 @@ import {
 
 class App extends Component {
 
-  localState = {
+  state = {
     // dataLoading: false,
-    selectedView: null,
+    filterApplied: null,
     errorMessage: ''
   }
 
@@ -48,24 +45,48 @@ class App extends Component {
     // Now work out how to output that to the page, and remove the loading spinner!
   }
 
-  filterPosts = (filter) =>  {
+  /* 
+    * Function to help filter post list based on user interaction with category controls
+  */
+  dealWithFilterClick = (filter) =>  {
+    let filterApplied;
+
     if(filter === 'show all') {
-      console.log('show all');
+      filterApplied = null;
     } else {
-      console.log(filter);
+      filterApplied = filter;
+    }
+
+    this.setState(() => ({
+      filterApplied
+    }))
+  }
+
+  /* 
+    * Convert unix timestamp from milliseconds
+  */
+  convertToSeconds = (timeStamp) => {
+    if(timeStamp) {
+      return timeStamp.substring(0,10);
     }
   }
 
-  printTime = (timeStamp) => {
-    if(timeStamp) {
-      // Return timestamp in seconds not milliseconds!
-      return timeStamp.substring(0,10);
+  filterPosts = (filter, posts) => {
+    if(filter === null) {
+      return posts;
+    } else {
+      const filteredPosts = posts.filter(post => post.category === filter);
+      return filteredPosts;
     }
   }
 
   render() {
 
     const { categories, posts } = this.props;
+    const { filterApplied } = this.state;
+
+    const filteredPosts = this.filterPosts(filterApplied, posts);
+    console.log(filteredPosts);
 
     return (
       <div className="App">
@@ -73,31 +94,28 @@ class App extends Component {
           <ul className="categories__list">
             {categories.map(cat => (
               <li key={cat.name}>
-                <button type="button" onClick={this.filterPosts(`${cat.name}`)}>{cat.name}</button>
+                <button type="button" onClick={() => this.dealWithFilterClick(`${cat.name}`)}>{cat.name}</button>
               </li>
             ))}
             <li>
-              <button type="button" onClick={this.filterPosts('show all')}>Show all</button>
+              <button type="button" onClick={() => this.dealWithFilterClick('show all')}>Show all</button>
             </li>
           </ul>
         )}
-        {posts !== null && (
+        {(filteredPosts !== null && filteredPosts.length > 0) && (
           <ul className="posts__list">
-            {posts.map(post => (
-              <li key={post.id}>
-                <h2>{post.title}</h2>
-                <h3>by {post.author}</h3>
-                <p><Timestamp time={this.printTime(`${post.timestamp}`)} format='full' includeDay /></p>
-                <p>Votes: {post.voteScore}</p>
-              </li>
+            {filteredPosts.map(filteredPost => (
+              <Post key={filteredPost.id} post={filteredPost} />
             ))}
           </ul>
+        )}
+        {(filteredPosts !== null && filteredPosts.length === 0) && (
+          <p>Sorry, there are no posts to display</p>
         )}
       </div>
     );
   }
 }
-
 
 
 // Format shape of store data for this component
