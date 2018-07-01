@@ -6,6 +6,7 @@ import {
   VOTE_ON_POST,
   EDIT_POST,
   DELETE_POST,
+  ADD_FILTER
 } from '../actions';
 
 import { arrayToObject } from '../utils/helper'
@@ -27,6 +28,8 @@ export function posts(state = {}, action) {
       return { ...state, 
         allPosts : currentPosts
       }
+
+
       // return {
       //   // Object spread operator to return a copied & spread version of the old state object for us to work with
       //   ...state.posts,
