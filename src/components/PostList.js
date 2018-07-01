@@ -79,14 +79,14 @@ function mapStateToProps( {filter, posts} ) {
       So convert posts data from the nested object format which it is stored in the Redux store */
   let postsArray = null;
 
-  if(posts.allPosts) {
+  if(posts.currentPosts) {
 
-    let objectKeys = [Object.keys(posts.allPosts)],
+    let objectKeys = [Object.keys(posts.currentPosts)],
         i = 0;
 
     postsArray = [];
 
-    const data = posts.allPosts;
+    const data = posts.currentPosts;
 
     objectKeys[0].map((objKey) => {
       postsArray.push(data[objKey]);

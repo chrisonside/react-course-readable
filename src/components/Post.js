@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Vote from './Vote';
 import Timestamp from 'react-timestamp';
-import { convertToSeconds } from '../utils/helper'
+import { convertToSeconds } from '../utils/helper';
 
 const Post = ({post}) => {
 
@@ -10,7 +11,9 @@ const Post = ({post}) => {
       <h2>{`${post.title}`}</h2>
       <h3>by {`${post.author}`}</h3>
       <p><Timestamp time={convertToSeconds(`${post.timestamp}`)} format='full' includeDay /></p>
-      <p>Votes: {post.voteScore}</p>
+      <div>Votes: {post.voteScore}
+        <Vote post={post} />
+      </div>
     </li>
   );
 }

@@ -11,32 +11,19 @@ import {
 
 import { arrayToObject } from '../utils/helper'
 
-export function posts(state = {}, action) {
+export function posts(currentStateForPosts = {}, action) {
+
+  const { payload } = action;
 
   switch (action.type) {
     case  GET_POSTS :
-      // // The action payload for getAllPosts is an array, but I want to store it in object format in my Redux store
-      // const currentPosts = {};
-      // for (let allPosts of action.payload) {
-      //   currentPosts[allPosts.id] = allPosts;
-      // }
+      // The action payload for getAllPosts is an array, but I want to store it in object format in my Redux store, for easy look-ups
+      const currentPosts = arrayToObject(payload, 'id');
 
-      console.log('posts data getting updated by reducer');
-
-      const currentPosts = arrayToObject(action.payload, 'id');
-      // console.log(currentPosts);
-
-
-      return { ...state, 
-        allPosts : currentPosts
+      return { ...currentStateForPosts, 
+        currentPosts
       }
 
-
-      // return {
-      //   // Object spread operator to return a copied & spread version of the old state object for us to work with
-      //   ...state.posts,
-      //   state.posts: action.payload
-      // }
     // case GET_POSTS_BY_CATEGORY :
     //   console.log(action)
     //   return action.payload;
@@ -56,7 +43,7 @@ export function posts(state = {}, action) {
     //   console.log(action)
     //   return action.payload;
     default :
-      return state
+      return currentStateForPosts
     }
 
 }
