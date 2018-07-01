@@ -1,7 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { BrowserRouter } from 'react-router-dom';
 import './index.css';
 import App from './components/App';
+// Import reducers, which will listen for actions dispatched by Redux store
 import reducer from './reducers/masterReducer';
 import { createStore, applyMiddleware, compose } from 'redux';
 import { Provider } from 'react-redux';
@@ -18,10 +20,14 @@ const store = createStore(
   )
 );
 
-// Make store accessible to our root component using Provider
+/*
+* Make store accessible to our root component using Provider from React Redux bindings
+* Wrapping my App in React Router's BrowserRouter component
+* BrowserRouter listens to changes in my App's URL and will notify other components when the URL does change
+*/
 ReactDOM.render(
   <Provider store={store}>
-    <App />
+    <BrowserRouter><App /></BrowserRouter>
   </Provider>,
   document.getElementById('root')
 );
