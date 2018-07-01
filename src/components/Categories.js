@@ -4,8 +4,6 @@ import { Link } from 'react-router-dom';
 
 import {
   getCategories,
-  getPostsByCategory,
-  addFilter
 } from '../actions';
 
 
@@ -16,24 +14,6 @@ class Categories extends Component {
   */
   componentDidMount() {
     this.props.getCategories();
-  }
-
-  /* 
-    * Update filter property in Redux state, based on user interaction with category controls
-  */
-  dealWithFilterClick = (filter) =>  {
-    let filterApplied;
-
-    if(filter === 'show all') {
-      filterApplied = null;
-    } else {
-      filterApplied = filter;
-    }
-
-    // console.log(filterApplied);
-  
-    this.props.addFilter(filterApplied)
-    this.props.getPostsByCategory(filterApplied);
   }
 
   render() {
@@ -48,14 +28,17 @@ class Categories extends Component {
                 <li key={cat.name}>
                   <Link
                     to={`/${cat.name}`}
-                    className='close-search'
-                    onClick={() => this.dealWithFilterClick(`${cat.name}`)}>
+                    className='categories__link'>
                       {cat.name}
                   </Link>
                 </li>
               ))}
               <li>
-                <button type="button" onClick={() => this.dealWithFilterClick('show all')}>Show all</button>
+                <Link
+                  to={`/`}
+                  className='categories__link'>
+                    Show all
+                  </Link>
               </li>
             </ul>
           )}
@@ -64,7 +47,6 @@ class Categories extends Component {
   }
 }
 
-
 // Format shape of store data for this component
 function mapStateToProps( {categories} ) {
   return {
@@ -72,17 +54,13 @@ function mapStateToProps( {categories} ) {
   }
 }
 
-
 // Bind dispatch to the action creators required for this component
 function mapDispatchToProps(dispatch) {
   return {
     getCategories: () => dispatch(getCategories()),
-    getPostsByCategory: (category) => dispatch(getPostsByCategory(category)),
-    addFilter: (category) => dispatch(addFilter(category))
   }
 }
 
-// Use connect to access store context set by Provider, and pass in parts of state and action-dispatches to the component as props
 export default connect(
   mapStateToProps,
   mapDispatchToProps)(Categories);

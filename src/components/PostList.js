@@ -10,34 +10,49 @@ import {
   voteOnPost,
   editPost,
   deletePost,
-  getPostsByCategory,
-  addFilter
+  getPostsByCategory
 } from '../actions';
 
 
 class PostList extends Component {
 
   /*
-    * Once this component has rendered, call the posts API to update our app with the posts data
+    * So the first time this posts component mounts, check URL to see if they are on home page or if they've landed on a category page.
+    * Then call relevant action to display all/filtered posts
   */
   componentDidMount() {
     const { category } = this.props.match.params;
-    // If there is no category param in the url - i.e. we are on the home page
+    // Fetch posts depending on route - if there is no category param in the url, we are on the home page
+    this.getPosts(category);
+  }
+
+  /* 
+    * Route update handled by Browser Router's Link component in Categories component
+    * The optional :category parameter changing in the route triggers update of this component.
+    * So now handle data updates on the back of user interaction (with back/forward button clicks, or category buttons)
+  */
+  componentDidUpdate(prevProps) {
+    // To avoid an infinite loop, check URL category parameter has indeed been updated
+    const { category } = this.props.match.params;
+    if(category !== prevProps.match.params.category) {
+      this.getPosts(category);
+    }
+  }
+
+  /* 
+    * Function to call action creators that retrieve posts from API
+  */
+  getPosts(category) {
     if (category === undefined) {
       this.props.getAllPosts();
-      this.props.addFilter(null)
     } else {
       this.props.getPostsByCategory(category);
-      this.props.addFilter(category);
     }
   }
 
   render() {
 
-    // const { filter, posts } = this.props;
     const { posts } = this.props;
-
-    // const filteredPosts = this.filterPosts(filter, posts);
 
     return (
       <div classs="posts">
@@ -80,7 +95,6 @@ function mapStateToProps( {filter, posts} ) {
   }
 
   return {
-    filter,
     posts: postsArray
   }
 
@@ -92,7 +106,6 @@ function mapDispatchToProps(dispatch) {
   return {
     getAllPosts: () => dispatch(getAllPosts()),
     getPostsByCategory: (category) => dispatch(getPostsByCategory(category)),
-    addFilter: (category) => dispatch(addFilter(category))
   }
 }
 

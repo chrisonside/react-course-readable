@@ -1,7 +1,7 @@
 import * as API from '../utils/api';
 
 // Set up constants which will be exported to reducers
-export const GET_ALL_POSTS = 'GET_ALL_POSTS';
+export const GET_POSTS = 'GET_POSTS';
 export const GET_CATEGORIES = 'GET_CATEGORIES';
 export const GET_POSTS_BY_CATEGORY = 'GET_POSTS_BY_CATEGORY';
 export const GET_POST_BY_ID  = 'GET_POST_BY_ID';
@@ -15,7 +15,7 @@ export const EDIT_POST = 'EDIT_POST';
 export const EDIT_COMMENT = 'EDIT_COMMENT';
 export const DELETE_POST = 'DELETE_POST';
 export const DELETE_COMMENT = 'DELETE_COMMENT';
-export const ADD_FILTER = 'ADD_FILTER';
+// export const ADD_FILTER = 'ADD_FILTER';
 
 /* 
   * 
@@ -31,7 +31,7 @@ export const updateReduxStore = (payload, type) => ({
 export const getAllPosts = () => dispatch => (
   API
   .getAllPosts()
-  .then(allPosts => dispatch(updateReduxStore(allPosts, GET_ALL_POSTS)))
+  .then(allPosts => dispatch(updateReduxStore(allPosts, GET_POSTS)))
 );
 
 export const getCategories = () => dispatch => (
@@ -40,11 +40,11 @@ export const getCategories = () => dispatch => (
   .then(categories => dispatch(updateReduxStore(categories, GET_CATEGORIES)))
 );
 
-// export const getPostsByCategory = (category) => dispatch => (
-//   API
-//   .getPostsByCategory(category)
-//   .then(posts => dispatch(updateReduxStore(posts, GET_POSTS_BY_CATEGORY)))
-// );
+export const getPostsByCategory = (category) => dispatch => (
+  API
+  .getPostsByCategory(category)
+  .then(posts => dispatch(updateReduxStore(posts, GET_POSTS)))
+)
 
 export const getPostById = (id) => dispatch => (
   API
@@ -112,13 +112,7 @@ export const deleteComment = (id) => dispatch => (
   .then(comment => dispatch(updateReduxStore(comment, DELETE_COMMENT)))
 )
 
-export const getPostsByCategory = (category) => dispatch => (
-  API
-  .getPostsByCategory(category)
-  .then(posts => dispatch(updateReduxStore(posts, GET_ALL_POSTS)))
-)
-
-export const addFilter = (payload, type = ADD_FILTER) => ({
-  payload,
-  type
-});
+// export const addFilter = (payload, type = ADD_FILTER) => ({
+//   payload,
+//   type
+// });
