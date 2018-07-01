@@ -2,11 +2,18 @@ import {
   GET_CATEGORIES
 } from '../actions';
 
-export function categories(state = {}, action) {
+import { arrayToObject } from '../utils/helper'
+
+export function categories(categoriesState = {}, action) {
   switch (action.type) {
     case  GET_CATEGORIES : 
-      return action.payload.categories;
+      const { payload } = action
+      const currentCategories = arrayToObject(payload.categories, 'name');
+      return {
+        ...categoriesState,
+        currentCategories
+      }
     default : 
-      return state
+      return categoriesState
     }
 }

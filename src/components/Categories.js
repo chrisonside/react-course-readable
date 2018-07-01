@@ -48,9 +48,29 @@ class Categories extends Component {
 }
 
 // Format shape of store data for this component
-function mapStateToProps( {categories} ) {
+function mapStateToProps( {filter, categories} ) {
+
+  /*  I want posts data to be an array of objects so that it is easy to loop through them and display in the UI.
+      So convert posts data from the nested object format which it is stored in the Redux store */
+  let categoriesArray = null;
+
+  if(categories.currentCategories) {
+
+    let objectKeys = [Object.keys(categories.currentCategories)],
+        i = 0;
+
+    categoriesArray = [];
+
+    const data = categories.currentCategories;
+
+    objectKeys[0].map((objKey) => {
+      categoriesArray.push(data[objKey]);
+    });
+  
+  }
+
   return {
-    categories,
+    categories: categoriesArray
   }
 }
 
