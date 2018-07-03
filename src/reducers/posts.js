@@ -12,10 +12,7 @@ import {
 import { arrayToObject } from '../utils/helper'
 
 export function posts(postsState = {}, action) {
-
   const { payload } = action;
-  console.log(payload);
-
   switch (action.type) {
     case  GET_POSTS :
       // The action payload for getAllPosts is an array, but I want to store it in object format in my Redux store, for easy look-ups
@@ -34,9 +31,17 @@ export function posts(postsState = {}, action) {
     // case ADD_POST :
     //   console.log(action)
     //   return action.payload;
-    // case VOTE_ON_POST :
-    //   console.log(action)
-    //   return action.payload;
+    case VOTE_ON_POST :
+      const id = payload.id;
+      const updatedVote = payload.voteScore;
+      return {
+        ...postsState,
+        [id]: {
+            ...postsState[id],
+            voteScore: updatedVote
+        },
+    };
+      return action.payload;
     // case EDIT_POST :
     //   console.log(action)
     //   return action.payload;
