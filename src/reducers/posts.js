@@ -11,17 +11,18 @@ import {
 
 import { arrayToObject } from '../utils/helper'
 
-export function posts(currentStateForPosts = {}, action) {
+export function posts(postsState = {}, action) {
 
   const { payload } = action;
+  console.log(payload);
 
   switch (action.type) {
     case  GET_POSTS :
       // The action payload for getAllPosts is an array, but I want to store it in object format in my Redux store, for easy look-ups
       const currentPosts = arrayToObject(payload, 'id');
-
-      return { ...currentStateForPosts, 
-        currentPosts
+      // So currently they are an an object containing keyed (by ID) objects
+      return { 
+        ...postsState[0] = currentPosts
       }
 
     // case GET_POSTS_BY_CATEGORY :
@@ -43,7 +44,7 @@ export function posts(currentStateForPosts = {}, action) {
     //   console.log(action)
     //   return action.payload;
     default :
-      return currentStateForPosts
+      return postsState
     }
 
 }

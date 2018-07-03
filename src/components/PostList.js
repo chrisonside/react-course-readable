@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 // import ReactLoading from 'react-loading';
 import Post from './Post';
+import { Link } from 'react-router-dom';
 
 import {
   getAllPosts,
@@ -54,12 +55,14 @@ class PostList extends Component {
 
     const { posts } = this.props;
 
+    console.log(this.props);
+
     return (
-      <div classs="posts">
+      <div className="posts">
         {(posts !== null && posts.length > 0) && (
           <ul className="posts__list">
-            {posts.map(filteredPost => (
-              <Post key={filteredPost.id} post={filteredPost} />
+            {posts.map(post => (
+              <Post key={post.id} post={post} />
             ))}
           </ul>
         )}
@@ -67,26 +70,30 @@ class PostList extends Component {
           <p>Sorry, there are no posts to display</p>
         )}
       </div>
+       // <Link
+       //    to={/addpost}
+       //    className='post__link'>
+       //      Add post
+       //  </Link>
     );
   }
 }
 
 
 // Format shape of store data for this component
-function mapStateToProps( {filter, posts} ) {
+function mapStateToProps( {posts} ) {
 
-  /*  I want posts data to be an array of objects so that it is easy to loop through them and display in the UI.
-      So convert posts data from the nested object format which it is stored in the Redux store */
+  /*  Convert posts data from my Redux store's object format to an array for easy looping over in this component */
   let postsArray = null;
 
-  if(posts.currentPosts) {
+  if(posts) {
 
-    let objectKeys = [Object.keys(posts.currentPosts)],
+    let objectKeys = [Object.keys(posts)],
         i = 0;
 
     postsArray = [];
 
-    const data = posts.currentPosts;
+    const data = posts;
 
     objectKeys[0].map((objKey) => {
       postsArray.push(data[objKey]);

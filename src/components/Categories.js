@@ -19,6 +19,7 @@ class Categories extends Component {
   render() {
 
     const { categories } = this.props;
+    console.log(categories);
 
     return (
       <div className="categories">
@@ -48,20 +49,19 @@ class Categories extends Component {
 }
 
 // Format shape of store data for this component
-function mapStateToProps( {filter, categories} ) {
+function mapStateToProps( {categories} ) {
 
-  /*  I want posts data to be an array of objects so that it is easy to loop through them and display in the UI.
-      So convert posts data from the nested object format which it is stored in the Redux store */
   let categoriesArray = null;
 
-  if(categories.currentCategories) {
+  /*  Convert categories data from my Redux store's object format to an array for easy looping over in this component */
+  if(categories) {
 
-    let objectKeys = [Object.keys(categories.currentCategories)],
+    let objectKeys = [Object.keys(categories)],
         i = 0;
 
     categoriesArray = [];
 
-    const data = categories.currentCategories;
+    const data = categories;
 
     objectKeys[0].map((objKey) => {
       categoriesArray.push(data[objKey]);
