@@ -45,8 +45,8 @@ export const getAllCommentsForPost = (postId) =>
   fetch(`${api}/posts/${postId}/comments`, authHeader)
     .then(res => res.json());
 
-export const getCommentById = (commentId) => 
-  fetch(`${api}/comments/${commentId}`, authHeader)
+export const getCommentsById = (commentId) => 
+  fetch(`${api}/posts/${commentId}/comments`, authHeader)
     .then(res => res.json());
 
 // POST methods
