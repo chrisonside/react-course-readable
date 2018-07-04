@@ -14,20 +14,23 @@ class Comments extends Component {
     return (
       <div className="comments">
         {(comments !== null && comments.length > 0) && (
-          <ul className="comments__list">
-            {comments.map(comment => (
-              <li key={comment.id}>
-                <h2 className='comment__title'>{comment.title}</h2>
-                <p className='comment__body'>{comment.body}</p>
-                <p className='comment__timestamp'><Timestamp time={convertToSeconds(`${comment.timestamp}`)} format='full' includeDay /></p>
-                <p className='comment__author'>by {comment.author}</p>
-                <div className='comment__votes'>
-                  Votes: {comment.voteScore}
-                  <Vote post={comment} />
-                </div>
-              </li>
-            ))}
-          </ul>
+          <div>
+            <p className="comment__tip">There are currently {comments.length} comments about this post...</p>
+            <ul className="comments__list">
+              {comments.map(comment => (
+                <li key={comment.id}>
+                  <h2 className='comment__title'>{comment.title}</h2>
+                  <p className='comment__body'>{comment.body}</p>
+                  <p className='comment__timestamp'><Timestamp time={convertToSeconds(`${comment.timestamp}`)} format='full' includeDay /></p>
+                  <p className='comment__author'>by {comment.author}</p>
+                  <div className='comment__votes'>
+                    Votes: {comment.voteScore}
+                    <Vote post={comment} />
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
         )}
         {(comments === null) && (
           <p className="comment__tip">No comments just yet... Be the first to comment!</p>
@@ -69,4 +72,4 @@ function mapStateToProps( {currentPost} ) {
 }
 
 export default connect(
-  mapStateToProps)(Comments);
+  mapStateToProps, null)(Comments);

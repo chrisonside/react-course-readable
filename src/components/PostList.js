@@ -60,7 +60,6 @@ class PostList extends Component {
   render() {
 
     const { posts } = this.props;
-    console.log(posts);
 
     return (
       <div>
@@ -74,8 +73,12 @@ class PostList extends Component {
                   <h2 className='post__title'>{post.title}, {post.id}</h2>
                   <h3 className='post__author'>by {post.author}</h3>
                   <p className='post__timestamp'><Timestamp time={convertToSeconds(`${post.timestamp}`)} format='full' includeDay /></p>
-                  <div className='post__votes'>Votes: {post.voteScore}
+                  <div className='post__votes'>
+                    Votes: {post.voteScore}
                     <Vote post={post} />
+                  </div>
+                  <div className='post__comment-count'>
+                    There are currently {post.commentCount} comments about this post.
                   </div>
                   <Link
                     to={`/${post.category}/${post.id}`}
