@@ -4,9 +4,9 @@ import { Switch } from 'react-router-dom';
 import { Route } from 'react-router-dom';
 import ReactLoading from 'react-loading';
 import '../App.css';
+import PostForm from './PostForm';
 import PostList from './PostList';
 import Post from './Post';
-import AddPost from './AddPost';
 
 
 class App extends Component {
@@ -21,8 +21,8 @@ class App extends Component {
       <div className="App">
 
         <Switch>
+          <Route exact path='/add-post' component={PostForm}/>
           <Route exact path='/:category?' component={PostList} />
-          <Route exact path='/posts/add-post' component={AddPost} />
           <Route exact path='/:category?/:id?' component={Post} />
         </Switch>
 

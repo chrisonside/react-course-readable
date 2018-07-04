@@ -21,16 +21,14 @@ export function posts(postsState = {}, action) {
       return { 
         ...postsState[0] = currentPosts
       }
-
-    // case GET_POSTS_BY_CATEGORY :
-    //   console.log(action)
-    //   return action.payload;
-    // case GET_POST_BY_ID :
-    //   console.log(action)
-    //   return action.payload;
-    // case ADD_POST :
-    //   console.log(action)
-    //   return action.payload;
+    case ADD_POST :
+      const newPostId = payload.id;
+      return { 
+        /*  This isn't 100% necessary as currently after adding new post user prompted to return to home (GET_POSTS is called). 
+            But covering ADD_POST in case I develop app further in the future */
+        ...postsState,
+        [newPostId]: payload
+      }
     case VOTE_ON_POST :
       const id = payload.id;
       const updatedVote = payload.voteScore;

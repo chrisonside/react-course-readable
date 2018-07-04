@@ -66,11 +66,17 @@ class PostList extends Component {
         <Categories />
         <Sort />
         <div className="posts">
+          <Link
+            to={'/add-post'}
+            className='post__link'>
+              Add post
+              <PlusSign className="post__add-icon" size={30}/>
+          </Link>
           {(posts !== null && posts.length > 0) && (
             <ul className="posts__list">
               {posts.map(post => (
                 <li key={`${post.id}`}>
-                  <h2 className='post__title'>{post.title}, {post.id}</h2>
+                  <h2 className='post__title'>{post.title}</h2>
                   <h3 className='post__author'>by {post.author}</h3>
                   <p className='post__timestamp'><Timestamp time={convertToSeconds(`${post.timestamp}`)} format='full' includeDay /></p>
                   <div className='post__votes'>
@@ -101,7 +107,7 @@ class PostList extends Component {
           )}
         </div>
         <Link
-          to={'/posts/add-post'}
+          to={'/add-post'}
           className='post__link'>
             Add post
             <PlusSign className="post__add-icon" size={30}/>
