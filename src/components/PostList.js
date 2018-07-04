@@ -60,6 +60,7 @@ class PostList extends Component {
   render() {
 
     const { posts } = this.props;
+    console.log(posts);
 
     return (
       <div>
@@ -69,8 +70,8 @@ class PostList extends Component {
           {(posts !== null && posts.length > 0) && (
             <ul className="posts__list">
               {posts.map(post => (
-                <li key={post.id}>
-                  <h2 className='post__title'>{post.title}</h2>
+                <li key={`${post.id}`}>
+                  <h2 className='post__title'>{post.title}, {post.id}</h2>
                   <h3 className='post__author'>by {post.author}</h3>
                   <p className='post__timestamp'><Timestamp time={convertToSeconds(`${post.timestamp}`)} format='full' includeDay /></p>
                   <div className='post__votes'>Votes: {post.voteScore}
@@ -78,9 +79,8 @@ class PostList extends Component {
                   </div>
                   <Link
                     to={`/${post.category}/${post.id}`}
-                    postId={post.id} 
                     className='post__link'>
-                      See full post {post.name}
+                      See full post
                   </Link>
                 </li>
               ))}
@@ -128,8 +128,6 @@ function mapStateToProps( {posts, sort} ) {
       postsArray.push(data[objKey]);
     });
 
-    console.log(postsArray);
-
     if(!isObjectEmpty(sort)) {
       const sortValue = sort.sortBy;
       postsArray.sort(function(a, b) {
@@ -137,7 +135,6 @@ function mapStateToProps( {posts, sort} ) {
       });
     }
 
-    console.log(postsArray);
   }
 
   return {
