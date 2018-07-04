@@ -1,12 +1,12 @@
 import * as API from '../utils/api';
+import { arrayToObject } from '../utils/helper'
 
 // Set up constants which will be exported to reducers
 export const GET_POSTS = 'GET_POSTS';
 export const GET_CATEGORIES = 'GET_CATEGORIES';
 export const GET_POSTS_BY_CATEGORY = 'GET_POSTS_BY_CATEGORY';
-export const GET_POST_BY_ID  = 'GET_POST_BY_ID';
+export const GET_POST_AND_COMMENTS_BY_ID  = 'GET_POST_AND_COMMENTS_BY_ID';
 export const GET_ALL_COMMENTS_FOR_POST = 'GET_ALL_COMMENTS_FOR_POST';
-export const GET_COMMENT_BY_ID = 'GET_COMMENT_BY_ID';
 export const ADD_POST = 'ADD_POST';
 export const ADD_COMMENT = 'ADD_COMMENT';
 export const VOTE_ON_POST = 'VOTE_ON_POST';
@@ -15,7 +15,7 @@ export const EDIT_POST = 'EDIT_POST';
 export const EDIT_COMMENT = 'EDIT_COMMENT';
 export const DELETE_POST = 'DELETE_POST';
 export const DELETE_COMMENT = 'DELETE_COMMENT';
-// export const ADD_FILTER = 'ADD_FILTER';
+export const SORT_POSTS = 'SORT_POSTS';
 
 /* 
   * 
@@ -46,22 +46,24 @@ export const getPostsByCategory = (category) => dispatch => (
   .then(posts => dispatch(updateReduxStore(posts, GET_POSTS)))
 )
 
-export const getPostById = (id) => dispatch => (
+export const getPostAndCommentsById = (id) => dispatch => (
   API
   .getPostById(id)
-  .then(post => dispatch(updateReduxStore(post, GET_POST_BY_ID)))
+  .then(post => {
+    API
+    .getCommentsById(id)
+    .then(comments => {
+      const keyedComments = arrayToObject(comments, 'id');
+      post['comments'] = keyedComments;
+      dispatch(updateReduxStore(post, GET_POST_AND_COMMENTS_BY_ID))
+    })
+  })
 );
 
 export const getAllCommentsForPost = (id) => dispatch => (
   API
   .getAllCommentsForPost(id)
   .then(comments => dispatch(updateReduxStore(comments, GET_ALL_COMMENTS_FOR_POST)))
-);
-
-export const getCommentById = (id) => dispatch => (
-  API
-  .getCommentById(id)
-  .then(comment => dispatch(updateReduxStore(comment, GET_COMMENT_BY_ID)))
 );
 
 export const addPost = (title, body, author, category) => dispatch => (
@@ -79,19 +81,19 @@ export const addComment = (body, author, parentId) => dispatch => (
 export const voteOnPost = (id, option) => dispatch => (
   API
   .voteOnPost(id, option)
-  .then(vote => dispatch(updateReduxStore(vote, VOTE_ON_POST)))
+  .then(voteScore => dispatch(updateReduxStore(voteScore, VOTE_ON_POST)))
 )
 
 export const voteOnComment = (id, option) => dispatch => (
   API
   .voteOnComment(id, option)
-  .then(vote => dispatch(updateReduxStore(vote, ADD_COMMENT)))
+  .then(voteScore => dispatch(updateReduxStore(voteScore, VOTE_ON_COMMENT)))
 )
 
 export const editPost = (id, title, body) => dispatch => (
   API
   .editPost(id, title, body)
-  .then(vote => dispatch(updateReduxStore(vote, EDIT_POST)))
+  .then(post => dispatch(updateReduxStore(post, EDIT_POST)))
 )
 
 export const editComment = (id, timestamp, body) => dispatch => (
@@ -112,7 +114,7 @@ export const deleteComment = (id) => dispatch => (
   .then(comment => dispatch(updateReduxStore(comment, DELETE_COMMENT)))
 )
 
-// export const addFilter = (payload, type = ADD_FILTER) => ({
-//   payload,
-//   type
-// });
+export const sortBy = (payload, type = SORT_POSTS) => ({
+  payload,
+  type
+});
