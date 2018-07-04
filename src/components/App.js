@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Switch } from 'react-router-dom';
 import { Route } from 'react-router-dom';
 import ReactLoading from 'react-loading';
 import '../App.css';
-import Categories from './Categories';
 import PostList from './PostList';
+import Post from './Post';
+import AddPost from './AddPost';
 
 
 class App extends Component {
@@ -18,9 +20,11 @@ class App extends Component {
     return (
       <div className="App">
 
-        <Categories />
-
-        <Route path='/:category?' component={PostList} />
+        <Switch>
+          <Route exact path='/:category?' component={PostList} />
+          <Route exact path='/posts/add-post' component={AddPost} />
+          <Route exact path='/:category?/:id?' component={Post} />
+        </Switch>
 
       </div>
 

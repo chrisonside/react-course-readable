@@ -1,8 +1,14 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-// import ReactLoading from 'react-loading';
-import Post from './Post';
 import { Link } from 'react-router-dom';
+// import ReactLoading from 'react-loading';
+import Categories from './Categories';
+import Sort from './Sort';
+import Vote from './Vote';
+import Timestamp from 'react-timestamp';
+import { convertToSeconds } from '../utils/helper';
+import { isObjectEmpty } from '../utils/helper';
+import PlusSign from 'react-icons/lib/fa/plus-circle';
 
 import {
   getAllPosts,
@@ -55,33 +61,56 @@ class PostList extends Component {
 
     const { posts } = this.props;
 
-    console.log(this.props);
-
     return (
-      <div className="posts">
-        {(posts !== null && posts.length > 0) && (
-          <ul className="posts__list">
-            {posts.map(post => (
-              <Post key={post.id} post={post} />
-            ))}
-          </ul>
-        )}
-        {(posts !== null && posts.length === 0) && (
-          <p>Sorry, there are no posts to display</p>
-        )}
+      <div>
+        <Categories />
+        <Sort />
+        <div className="posts">
+          {(posts !== null && posts.length > 0) && (
+            <ul className="posts__list">
+              {posts.map(post => (
+                <li key={post.id}>
+                  <h2 className='post__title'>{post.title}</h2>
+                  <h3 className='post__author'>by {post.author}</h3>
+                  <p className='post__timestamp'><Timestamp time={convertToSeconds(`${post.timestamp}`)} format='full' includeDay /></p>
+                  <div className='post__votes'>Votes: {post.voteScore}
+                    <Vote post={post} />
+                  </div>
+                  <Link
+                    to={`/${post.category}/${post.id}`}
+                    postId={post.id} 
+                    className='post__link'>
+                      See full post {post.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          )}
+          {(posts !== null && posts.length === 0) && (
+            <p>
+              Sorry, there are no posts to display
+              <Link
+                  to={`/`}
+                  className='categories__link'>
+                    Take me home
+              </Link>
+            </p>
+          )}
+        </div>
+        <Link
+          to={'/posts/add-post'}
+          className='post__link'>
+            Add post
+            <PlusSign className="post__add-icon" size={30}/>
+        </Link>
       </div>
-       // <Link
-       //    to={/addpost}
-       //    className='post__link'>
-       //      Add post
-       //  </Link>
     );
   }
 }
 
 
 // Format shape of store data for this component
-function mapStateToProps( {posts} ) {
+function mapStateToProps( {posts, sort} ) {
 
   /*  Convert posts data from my Redux store's object format to an array for easy looping over in this component */
   let postsArray = null;
@@ -98,7 +127,17 @@ function mapStateToProps( {posts} ) {
     objectKeys[0].map((objKey) => {
       postsArray.push(data[objKey]);
     });
-  
+
+    console.log(postsArray);
+
+    if(!isObjectEmpty(sort)) {
+      const sortValue = sort.sortBy;
+      postsArray.sort(function(a, b) {
+        return b[sortValue] - a[sortValue]
+      });
+    }
+
+    console.log(postsArray);
   }
 
   return {
