@@ -40,14 +40,19 @@ export function posts(postsState = {}, action) {
             ...postsState[id],
             voteScore: updatedVote
         },
-    };
-      return action.payload;
+      };
     // case EDIT_POST :
     //   console.log(action)
     //   return action.payload;
-    // case DELETE_POST :
-    //   console.log(action)
-    //   return action.payload;
+    case DELETE_POST :
+      const postId = payload.id;
+      return {
+        ...postsState,
+        [postId]: {
+            ...postsState[postId],
+            deleted: true
+        },
+      };
     default :
       return postsState
     }

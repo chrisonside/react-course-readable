@@ -1,7 +1,8 @@
 import {
   GET_POST_AND_COMMENTS_BY_ID,
   VOTE_ON_POST,
-  VOTE_ON_COMMENT
+  VOTE_ON_COMMENT,
+  DELETE_POST
 } from '../actions';
 
 import { arrayToObject } from '../utils/helper';
@@ -36,6 +37,13 @@ export function currentPost(currentPostState = {}, action) {
               voteScore: updatedCommentVote
             }
           }
+      }
+
+    case DELETE_POST :
+      const postToUpdate = payload.id;
+      return {
+        ...currentPostState,
+        deleted: true
       }
 
     default : 

@@ -91,11 +91,11 @@ class PostList extends Component {
           )}
           {(posts !== null && posts.length === 0) && (
             <p>
-              Sorry, there are no posts to display
+              Sorry, there are no post currently live in this category.
               <Link
                   to={`/`}
                   className='categories__link'>
-                    Take me home
+                    Take me back to start
               </Link>
             </p>
           )}
@@ -128,9 +128,13 @@ function mapStateToProps( {posts, sort} ) {
     const data = posts;
 
     objectKeys[0].map((objKey) => {
-      postsArray.push(data[objKey]);
+      // Check if a post has been deleted before adding it to array
+      if(data[objKey]['deleted'] === false) {
+        postsArray.push(data[objKey]);
+      }
     });
 
+    /* Sort the posts */
     if(!isObjectEmpty(sort)) {
       const sortValue = sort.sortBy;
       postsArray.sort(function(a, b) {
