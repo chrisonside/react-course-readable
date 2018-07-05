@@ -1,0 +1,13 @@
+.sort {
+  margin-bottom: 15px;
+}
+
+.sort__label {
+  color: #000;
+  font-weight: 400;
+  margin-right: 15px;
+}
+
+.sort__select {
+  /* TO DO - make select button look nice */
+}
