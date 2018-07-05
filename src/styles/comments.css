@@ -1,0 +1,60 @@
+.comments {
+  padding: 20px 20px 10px;
+  background-color: #ededed;
+  color: #000;
+}
+
+.comments__heading {
+  font-size: 21px;
+  line-height: 23px;
+  margin: 0 0 10px;
+}
+
+.comments__tip {
+  font-size: 16px;
+  line-height: 19px;
+  margin: 0 0 10px;
+}
+
+.comments__tip--posts-present {
+  margin: 0 0 20px;
+}
+
+.comments__list {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.comments__item {
+  background-color: #fff;
+  padding: 25px 20px 20px;
+  margin-bottom: 20px;
+}
+
+.comments__body {
+  font-size: 17px;
+  line-height: 20px;
+  margin: 0 0 15px;
+  color: #000;
+}
+
+.comments__details {
+  font-size: 15px;
+  line-height: 18px;
+  margin: 0 0 5px;
+  color: #555;
+}
+
+.comments__votes {
+  margin-bottom: 5px;
+}
+
+.comments__vote-score {
+  display: inline-block;
+  vertical-align: middle;
+  font-size: 14px;
+  line-height: 17px;
+  margin: 5px 10px 0;
+  color: royalblue;
+}
