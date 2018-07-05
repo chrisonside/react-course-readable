@@ -1,0 +1,131 @@
+
+.posts__link {
+  color: royalblue;
+  text-decoration: none;
+}
+
+.posts__link:hover {
+  text-decoration: underline;
+}
+
+.posts__add-icon {
+  color: royalblue;
+  margin-left: 5px;
+}
+
+.posts__list {
+  list-style-type: none;
+  color: #000;
+  margin: 0 0 50px;
+  padding: 0;
+}
+
+.posts__item {
+  background-color: #fff;
+  padding: 30px 20px 0;
+}
+
+.post__title {
+  font-size: 26px;
+  line-height: 30px;
+  margin: 10px 0 10px;
+}
+
+.post__author {
+  font-size: 15px;
+  line-height: 18px;
+  margin: 0 0 5px;
+}
+
+.post__timestamp {
+  font-size: 15px;
+  line-height: 18px;
+  margin: 0 0 5px;
+  color: #555;
+}
+
+.post__votes {
+  margin-bottom: 5px;
+}
+
+.post__vote-score {
+  display: inline-block;
+  vertical-align: middle;
+  font-size: 14px;
+  line-height: 17px;
+  margin: 5px 10px 0;
+  color: royalblue;
+}
+
+.post__comment-count {
+  font-size: 14px;
+  line-height: 17px;
+  margin: 0 0 20px;
+  color: #555;
+}
+
+.post__see-more {
+  background-color: royalblue;
+  border: 2px solid royalblue;
+  border-radius: 2px;
+  color: #fff;
+  transition: all 0.2s ease-in;
+  display: inline-block;
+  padding: 7px 13px;
+  font-weight: 400;
+  text-decoration: none;
+}
+
+.post__see-more:hover {
+  background-color: #555;
+  border: 2px solid #555;
+}
+
+/* Styles related to individual post pages */
+
+.post {
+  background-color: #fff;
+  padding: 30px 20px;
+  border-radius: 5px;
+  margin-bottom: 20px;
+}
+
+.post__link {
+  display: inline-block;
+  color: royalblue;
+  text-decoration: none;
+  margin-bottom: 15px;
+  transition: all 0.2s ease-in;
+}
+
+.post__link:hover {
+  text-decoration: underline;
+  color: tomato;
+}
+
+.post__divider {
+  display: inline-block;
+  width: 50%;
+  border: 0;
+  height: 1px;
+  border-top: 1px solid #555;
+  margin: 20px 0;
+  padding: 0;
+}
+
+.post__divider--list {
+  margin: 50px 0 0;
+  padding: 0;
+}
+
+.post__message {
+  font-size: 19px;
+  line-height: 23px;
+  margin: 0 0 20px;
+  padding-top: 30px;
+  color: #555;
+}
+
+.post__link--start {
+  display: block;
+}
