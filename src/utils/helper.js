@@ -14,3 +14,14 @@ export function convertToSeconds(timeStamp) {
     return timeStamp.substring(0,10);
   }
 }
+
+/*
+  * Check if empty object
+*/
+export function isObjectEmpty(obj) {
+  if(Object.keys(obj).length === 0 && obj.constructor === Object) {
+    return true;
+  } else {
+    return false;
+  }
+}
