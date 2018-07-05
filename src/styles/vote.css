@@ -1,0 +1,14 @@
+.vote {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.vote__icon {
+  color: royalblue;
+  transition: all 0.2s ease-in;
+}
+
+  .vote__icon:hover {
+    cursor: pointer;
+    color: tomato;
+  }
