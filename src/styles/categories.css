@@ -1,0 +1,27 @@
+.categories {
+  padding: 5px 10px 2px;
+  margin-bottom: 25px;
+  display: inline-block;
+  border-bottom: 4px solid #000;
+}
+
+.categories__list {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.categories__item {
+  display: inline-block;
+  padding: 0 15px;
+}
+
+.categories__link {
+  color: #000;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+  .categories__link:hover {
+    text-decoration: underline;
+  }
