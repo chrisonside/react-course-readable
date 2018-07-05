@@ -1,0 +1,80 @@
+.form__intro {
+  margin: 10px 0 30px;
+  font-size: 20px;
+  line-height: 24px;
+  color: #000;
+}
+
+.form__field {
+  margin-bottom: 30px;
+}
+
+.form__label {
+  margin: 0 0 8px;
+  font-size: 19px;
+  line-height: 23px;
+  color: #000;
+}
+
+.form__category-label {
+  display: block;
+  margin: 0 0 5px;
+  font-size: 19px;
+  line-height: 23px;
+  color: #000;
+}
+
+.form__input-box {
+  padding: 10px;
+  border: 1px solid #555;
+  font-size: 16px;
+  line-height: 19px;
+  text-align: center;
+  color: #555;
+}
+
+.form__radio {
+  display: block;
+}
+
+.form__submit {
+  border: 2px solid #4CAF50;
+  background-color: #4CAF50;
+  margin-right: 20px;
+  padding: 10px 20px;
+  font-size: 19px;
+  line-height: 19px;
+  color: #fff;
+  transition: all 0.2s ease-in;
+}
+
+.form__submit:hover {
+  background-color: #fff;
+  color: #4CAF50;
+  cursor: pointer;
+}
+
+.form__clear {
+  border: 2px solid royalblue;
+  background-color: royalblue;
+  margin-right: 0;
+  padding: 10px 20px;
+  font-size: 19px;
+  line-height: 19px;
+  color: #fff;
+  transition: all 0.2s ease-in;
+}
+
+.form__clear:hover {
+  background-color: #fff;
+  color: royalblue;
+  cursor: pointer;
+}
+
+.form__success {
+
+}
+
+.form__icon {
+  
+}
