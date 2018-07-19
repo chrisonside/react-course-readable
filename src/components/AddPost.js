@@ -3,79 +3,84 @@ import { Field, reduxForm } from 'redux-form';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import TickSymbol from 'react-icons/lib/fa/check';
+import '../styles/form.css';
 import {
   addPost,
   getPostAndCommentsById
 } from '../actions';
 
+/*  
+  * This form is based on techniques mentioned in 2 different articles: 
+  * https://redux-form.com/6.7.0/examples/simple/ and https://scotch.io/tutorials/managing-form-state-in-react-with-redux-form
+  * https://scotch.io/tutorials/managing-form-state-in-react-with-redux-form
+*/
+
 /* 
-  * The following validation code is based on a technique explained in this article - https://scotch.io/tutorials/managing-form-state-in-react-with-redux-form
+  * Validate form values
 */
 const validate = val => {
   const errors = {};
-
-    console.log(val.title);
-
-    if (!val.title) {
-      errors.title = 'Required';
-    }
-    if (!val.body) {
-      errors.body = 'Required';
-    }
-    if (!val.author) {
-      errors.author = 'Required';
-    }
-    if (!val.category) {
-      errors.category = 'Required';
-    }
-    return errors;
+  if (!val.title) {
+    errors.title = 'Please enter a title';
+  }
+  if (!val.body) {
+    errors.body = 'Please enter body copy for your post';
+  }
+  if (!val.author) {
+    console.log(val.author);
+    errors.author = 'Please enter your name';
+  }
+  if (!val.category) {
+    errors.category = 'Please enter a category';
+  }
+  // Useful for debugging
+  console.log(errors);
+  return errors;
 }
-/* 
-  * As above, following code taken from this article - https://scotch.io/tutorials/managing-form-state-in-react-with-redux-form
+
+/*
+  * Function to render inputs for form
 */
-const renderfield = ({ input, label, type, meta: { touched, error } }) => (
-  <div>
-    <div className="form__inputs">
-      <input className="input" {...input} type={type} value={label} />
-      {touched && ((error && <div className='input__error'>{error}</div>))}
-    </div>
+const renderField = ({ input, label, type, meta: { touched, error, warning } }) => (
+  <div className="form__entry">
+    <label className="form__label">{label}</label>
+    <input className="form__input-box" {...input} type={type}/>
+    {touched && ((error && <div className="form__error">{error}</div>) || (warning && <span>{warning}</span>))}
   </div>
 )
 
-/* This form is based on https://redux-form.com/6.7.0/examples/simple/ and https://scotch.io/tutorials/managing-form-state-in-react-with-redux-form */
-class PostForm extends Component {
+/*
+  * Function to render radio buttons for form
+*/
+const renderRadioButtons = ({ meta: { touched, error, warning } }) => (
+  <div className="form__entry">
+    <div className="form__category-label">Category:</div>
+    <label className="form__radio">
+      <Field name="category" component="input" type="radio" value="redux" />
+        {' '}
+        Redux
+    </label>
+    <label className="form__radio">
+      <Field name="category" component="input" type="radio" value="react" />
+        {' '}
+        React
+    </label>
+    <label className="form__radio">
+      <Field name="category" component="input" type="radio" value="udacity" />
+        {' '}
+        Udacity
+    </label>
+    {touched && ((error && <div className="form__error">{error}</div>) || (warning && <span>{warning}</span>))}
+  </div>
+)
 
-  state = {
-    view: ''
-  }
-
-  componentDidMount() {
-    const { id } = this.props.match.params;
-    // Update current post in redux store in line with the ID in the url. 
-    // This won't be an issue if someone has come straight from post page (as that would have updated the currentPost redux values)
-    // However this safeguards against someone landing fresh on this URL (and potentially having no/outdated currentPost data)
-    if(id) {
-      this.setState({ view: 'edit-post' });
-      this.props.getPostAndCommentsById(id);
-    } else {
-      this.setState({ view: 'add-post' });
-    }
-  }
-
+class AddPost extends Component {
   /* 
-    * Handle form values, dispatch action depending on whether we are adding or editing post
+    * Handle form values input by user and dispatch action to add post to server
   */
   handleFormValues = (values) => {
-    if(this.state.view === 'edit-post') {
-      console.log('editing page')
-      console.log(values);
-      // this.props.addPost(values.title, values.body, values.author, values.category);
-    } else {
-      console.log('adding page')
-      console.log(values);
-      // this.props.addPost(values.title, values.body, values.author, values.category);
-    }
-    
+    const { title, body, author, category } = values;
+    this.props.addPost(title, body, author, category);
   };
 
   render() {
@@ -90,70 +95,32 @@ class PostForm extends Component {
             Back to home page
         </Link>
         {(submitSucceeded) && (
-          <div>
-            <div>Post successfully submitted!</div>
-            <TickSymbol className="form__icon" size={50}/>
+          <div className="form__confirmation">
+            <div className="form__success">Thanks! Your post has been successfully submitted!</div>
+            <TickSymbol className="form__icon" size={70}/>
           </div>
         )}
         {(!submitSucceeded) && (
-           <form onSubmit={handleSubmit(this.handleFormValues)}>
+           <form className="form" onSubmit={handleSubmit(this.handleFormValues)}>
+            <h1 className="form__title">Add a new post</h1>
             <div className="form__field">
-              <div>
-                <label className="field">Title</label>
-                <Field
-                  name="title"
-                  component={renderfield}
-                  type="text"
-                  label={(currentPost['title'] !== 'undefined') && (`${currentPost.title}`)}
-                />
-              </div>
+              <Field name="title" component={renderField} type="text" label="Post title"/>
             </div>
             <div className="form__field">
-              <div>
-                <label className="field">Body</label>
-                <Field
-                  name="body"
-                  component={renderfield}
-                  type="text"
-                  label={(currentPost['body'] !== 'undefined') && (`${currentPost.body}`)}
-                />
-              </div>
+              <Field name="body" component={renderField} type="text" label="Post body"/>
             </div>
             <div className="form__field">
-              <div>
-                <label className="field">Author</label>
-                <Field
-                  name="author"
-                  component={renderfield}
-                  type="text"
-                  label={(currentPost['author'] !== 'undefined') && (`${currentPost.author}`)}
-                />
-              </div>
+              <Field name="author" component={renderField} type="text" label="Author"/>
             </div>
             <div className="form__field">
               <div className="form__inputs">
-                <label className="label">Category</label>
-                <label className="radio">
-                  <Field name="category" component="input" type="radio" value="redux" id="js-radio-redux" checked />
-                  Redux
-                  {' '}
-                </label>
-                <label className="radio">
-                  <Field name="category" component="input" type="radio" value="react" id="js-radio-react" />
-                  React
-                  {' '}
-                </label>
-                <label className="radio">
-                  <Field name="category" component="input" type="radio" value="udacity" id="js-radio-udacity" />
-                  Udacity
-                  {' '}
-                </label>
+                <Field name="category" component={renderRadioButtons}/>
               </div>
             </div>
             <div>
-              <button type="submit" disabled={pristine || submitting}>Submit</button>
-              <button type="button" disabled={pristine || submitting} onClick={reset}>
-                Clear form
+              <button className="form__submit" type="submit" disabled={pristine || submitting}>Submit</button>
+              <button className="form__clear" type="button" disabled={pristine || submitting} onClick={reset}>
+                Clear
               </button>
             </div>
           </form>
@@ -176,13 +143,13 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-PostForm = connect(
+AddPost = connect(
   mapStateToProps,
   mapDispatchToProps
-)(PostForm);
+)(AddPost);
 
 // Hook our form up to the store
 export default reduxForm({
-  form: 'PostForm', // a unique identifier for form
+  form: 'AddPost', // a unique identifier for form
   validate,
-})(PostForm)
+})(AddPost)
