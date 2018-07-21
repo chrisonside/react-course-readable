@@ -4,7 +4,6 @@ import {
   GET_POST_BY_ID,
   ADD_POST,
   VOTE_ON_POST,
-  EDIT_POST,
   DELETE_POST,
   ADD_FILTER
 } from '../actions';
@@ -16,10 +15,10 @@ export function posts(postsState = {}, action) {
   switch (action.type) {
     case  GET_POSTS :
       // The action payload for getAllPosts is an array, but I want to store it in object format in my Redux store, for easy look-ups
-      const currentPosts = arrayToObject(payload, 'id');
+      const allPosts = arrayToObject(payload, 'id');
       // So currently they are an an object containing keyed (by ID) objects
       return { 
-        ...postsState[0] = currentPosts
+        ...postsState[0] = allPosts
       }
     case ADD_POST :
       const newPostId = payload.id;
@@ -39,9 +38,7 @@ export function posts(postsState = {}, action) {
             voteScore: updatedVote
         },
       };
-    // case EDIT_POST :
-    //   console.log(action)
-    //   return action.payload;
+
     case DELETE_POST :
       const postId = payload.id;
       return {

@@ -9,6 +9,7 @@ import Timestamp from 'react-timestamp';
 import { convertToSeconds } from '../utils/helper';
 import { isObjectEmpty } from '../utils/helper';
 import PlusSign from 'react-icons/lib/fa/plus-circle';
+import '../styles/postList.css';
 
 import {
   getAllPosts,
@@ -50,7 +51,7 @@ class PostList extends Component {
     * Function to call action creators that retrieve posts from API
   */
   getPosts(category) {
-    if (category === undefined) {
+    if (typeof category === 'undefined') {
       this.props.getAllPosts();
     } else {
       this.props.getPostsByCategory(category);
@@ -68,50 +69,55 @@ class PostList extends Component {
         <div className="posts">
           <Link
             to={'/add-post'}
-            className='post__link'>
+            className='posts__link posts__link--add'>
               Add post
-              <PlusSign className="post__add-icon" size={30}/>
+              <PlusSign className="posts__add-icon" size={30}/>
           </Link>
           {(posts !== null && posts.length > 0) && (
-            <ul className="posts__list">
-              {posts.map(post => (
-                <li key={`${post.id}`}>
-                  <h2 className='post__title'>{post.title}</h2>
-                  <h3 className='post__author'>by {post.author}</h3>
-                  <p className='post__timestamp'><Timestamp time={convertToSeconds(`${post.timestamp}`)} format='full' includeDay /></p>
-                  <div className='post__votes'>
-                    Votes: {post.voteScore}
-                    <Vote post={post} />
-                  </div>
-                  <div className='post__comment-count'>
-                    There are currently {post.commentCount} comments about this post.
-                  </div>
-                  <Link
-                    to={`/${post.category}/${post.id}`}
-                    className='post__link'>
-                      See full post
-                  </Link>
-                </li>
-              ))}
-            </ul>
+            <div>
+              <hr className="post__divider post__divider--list" />
+              <ul className="posts__list">
+                {posts.map(post => (
+                  <li key={`${post.id}`} className="posts__item">
+                    <h2 className='post__title'>{post.title}</h2>
+                    <h3 className='post__author'>by {post.author}</h3>
+                    <p className='post__timestamp'><Timestamp time={convertToSeconds(`${post.timestamp}`)} format='full' includeDay /></p>
+                    <div className='post__votes'>
+                      <div className="post__vote-score">Votes: {post.voteScore}</div>
+                      <Vote post={post} />
+                    </div>
+                    <div className='post__comment-count'>
+                      There are currently {post.commentCount} comments about this post.
+                    </div>
+                    <Link
+                      to={`/${post.category}/${post.id}`}
+                      className='post__see-more'>
+                        See full post
+                    </Link>
+                    <br />
+                    <hr className="post__divider post__divider--list" />
+                  </li>
+                ))}
+              </ul>
+            <Link
+              to={'/add-post'}
+              className='posts__link posts__link--add'>
+                Add post
+                <PlusSign className="posts__add-icon" size={30}/>
+            </Link>
+            </div>
           )}
-          {(posts !== null && posts.length === 0) && (
-            <p>
-              Sorry, there are no post currently live in this category.
+          {(posts === null || posts.length === 0) && (
+            <div>
+              <p className="post__message">Sorry, there are no posts currently live in this category.</p>
               <Link
                   to={`/`}
-                  className='categories__link'>
+                  className='post__link post__link--start'>
                     Take me back to start
               </Link>
-            </p>
+            </div>
           )}
         </div>
-        <Link
-          to={'/add-post'}
-          className='post__link'>
-            Add post
-            <PlusSign className="post__add-icon" size={30}/>
-        </Link>
       </div>
     );
   }

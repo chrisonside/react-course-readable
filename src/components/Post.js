@@ -8,6 +8,7 @@ import Comments from './Comments';
 import Timestamp from 'react-timestamp';
 import { convertToSeconds } from '../utils/helper';
 import { isObjectEmpty } from '../utils/helper';
+import '../styles/postList.css';
 
 import {
   getPostAndCommentsById,
@@ -44,18 +45,28 @@ class Post extends Component {
         )}
         {(!isObjectEmpty(currentPost)) && (
           <div>
-            <Link
-              to={`/`}
-              className='post__link'>
-                Back to home page
-            </Link>
-            <h1 className='post__title'>{currentPost.title}</h1>
-            <p className='post__body'>{currentPost.body}</p>
-            <p className='post__timestamp'><Timestamp time={convertToSeconds(`${currentPost.timestamp}`)} format='full' includeDay /></p>
-            <div className='post__votes'>Votes: {currentPost.voteScore}
-              <Vote post={currentPost} />
+            <div className="post">
+              <Link
+                to={'/'}
+                className='post__link'>
+                  Back to home page
+              </Link>
+              <h1 className='post__title'>{currentPost.title}</h1>
+              <p className='post__body'>{currentPost.body}</p>
+              <hr className="post__divider"/>
+              <p className='post__author'>By {currentPost.author}</p>
+              <p className='post__timestamp'><Timestamp time={convertToSeconds(`${currentPost.timestamp}`)} format='full' includeDay /></p>
+              <div className='post__votes post__votes--base'>
+                <div className="post__vote-score">Votes: {currentPost.voteScore}</div>
+                <Vote post={currentPost} />
+              </div>
+              <Link
+                to={`/edit-post/${currentPost.id}`}
+                className='post__edit'>
+                  Edit post
+              </Link>
+              <button className="post__delete" onClick={() => {this.handleDeletePost(`${currentPost.id}`)}}>Delete post</button>
             </div>
-            <button onClick={() => {this.handleDeletePost(`${currentPost.id}`)}}>Delete post</button>
             <Comments />
           </div>
         )}
@@ -66,11 +77,9 @@ class Post extends Component {
 
 // Format shape of store data for this component
 function mapStateToProps( {currentPost} ) {
-
   return {
     currentPost
   }
-
 }
 
 
