@@ -1,48 +1,78 @@
 import React, { Component } from 'react';
-import { Field, reduxForm } from 'redux-form';
-import { Link } from 'react-router-dom';
+import { Field, reduxForm, initialize } from 'redux-form';
+import { Link, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import TickSymbol from 'react-icons/lib/fa/check';
+import { isObjectEmpty } from '../utils/helper';
+import '../styles/form.css';
 import {
-  addPost,
   editPost,
   getPostAndCommentsById
 } from '../actions';
 
-/* 
-  * Following code based on this article - https://scotch.io/tutorials/managing-form-state-in-react-with-redux-form
+/*  
+  * This form is based on techniques mentioned in 3 different articles: 
+  * https://redux-form.com/6.7.0/examples/simple/ and https://scotch.io/tutorials/managing-form-state-in-react-with-redux-form
+  * https://scotch.io/tutorials/managing-form-state-in-react-with-redux-form
+  * https://www.davidmeents.com/create-redux-form-validation-initialized-values/
 */
-const renderfield = ({ input, label, type, meta: { touched, error } }) => (
-  <div>
-    <div className="form__inputs">
-      <input className="input" {...input} type={type} value={label} />
-      {touched && ((error && <div className='input__error'>{error}</div>))}
-    </div>
+
+const validate = val => {
+  const errors = {};
+    if (!val.title) {
+      errors.title = 'Please enter a title';
+    }
+    if (!val.body) {
+      errors.body = 'Please enter body copy for your post';
+    }
+    return errors;
+}
+
+const renderField = ({ input, label, type, value, meta: { touched, error, warning } }) => (
+  <div className="form__entry">
+    <label className="form__label">{label}</label>
+    <input className="form__input-box" {...input} type={type} />
+    {touched && ((error && <div className="form__error">{error}</div>) || (warning && <span>{warning}</span>))}
   </div>
 )
 
-/* This form is based on https://redux-form.com/6.7.0/examples/simple/ and https://scotch.io/tutorials/managing-form-state-in-react-with-redux-form */
 class EditPost extends Component {
 
   componentDidMount() {
-    const { id } = this.props.match.params;
-    // Update current post in redux store in line with the ID in the url. 
-    // This won't be an issue if someone has come straight from post page (as that would have updated the currentPost redux values)
-    // However this safeguards against someone landing fresh on this URL (and potentially having no/outdated currentPost data)
-    this.props.getPostAndCommentsById(id);
+    this.handleFormInitialize();
   }
 
   /* 
-    * Handle form values, dispatch action depending on whether we are adding or editing post
+    * Initialise redux form, inserting current values for this post that are editable
+  */
+  handleFormInitialize = () => {
+    const { currentPost } = this.props; 
+    if (!isObjectEmpty(currentPost)) {
+      const initializeData = {
+        "title": currentPost.title,
+        "body": currentPost.body,
+      };
+      this.props.initialize(initializeData);
+    }
+  }
+
+  /* 
+    * Handle submitted form values, and dispatch action to add post to server
   */
   handleFormValues = (values) => {
-      console.log(this.props.currentPost.id);
-      this.props.editPost(this.props.currentPost.id, values.title, values.body);
+    const { title, body } = values;
+    const id = this.props.currentPost.id;
+    this.props.editPost(id, title, body);
   }
 
   render() {
 
-    const { handleSubmit, pristine, reset, submitting, submitSucceeded, currentPost } = this.props;
+    const { initialize, handleSubmit, pristine, reset, submitting, submitSucceeded, currentPost } = this.props;
+
+    // If this is the first page of our app the user lands on (e.g. if they had a url cached), redirect to home page
+    if (isObjectEmpty(currentPost)) {
+      return <Redirect to='/' />;
+    }
 
     return (
       <div>
@@ -51,44 +81,42 @@ class EditPost extends Component {
           className='post__link'>
             Back to home page
         </Link>
-        {(submitSucceeded) && (
-          <div>
-            <div>Post successfully submitted!</div>
-            <TickSymbol className="form__icon" size={50}/>
-          </div>
-        )}
-        {(!submitSucceeded) && (
-           <form onSubmit={handleSubmit(this.handleFormValues)}>
+        <div>
+          {(submitSucceeded) && (
+            <div className="form__confirmation">
+              <div className="form__success">Post successfully edited!</div>
+              <TickSymbol className="form__icon" size={70}/>
+            </div>
+          )}
+          <form className="form" onSubmit={handleSubmit(this.handleFormValues)}>
             <div className="form__field">
               <div>
-                <label className="field">Title</label>
                 <Field
                   name="title"
-                  component={renderfield}
+                  component={renderField}
                   type="text"
-                  label={(currentPost['title'] !== 'undefined') && (`${currentPost.title}`)}
+                  label="Form Title"
                 />
               </div>
             </div>
             <div className="form__field">
               <div>
-                <label className="field">Body</label>
                 <Field
                   name="body"
-                  component={renderfield}
+                  component={renderField}
                   type="text"
-                  label={(currentPost['body'] !== 'undefined') && (`${currentPost.body}`)}
+                  label="Form Body"
                 />
               </div>
             </div>
             <div>
-              <button type="submit">Submit</button>
-              <button type="button" onClick={reset}>
+              <button className="form__submit" type="submit">Submit</button>
+              <button className="form__clear" type="button" onClick={reset}>
                 Clear form
               </button>
             </div>
           </form>
-        )} 
+        </div>
       </div>
     )
   }
@@ -102,9 +130,8 @@ function mapStateToProps( {currentPost} ) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    addPost: (title, body, author, category) => dispatch(addPost(title, body, author, category)),
     getPostAndCommentsById: (id) => dispatch(getPostAndCommentsById(id)),
-    editPost: (id, title, body) => dispatch(addPost(id, title, body)),
+    editPost: (id, title, body) => dispatch(editPost(id, title, body)),
   }
 }
 
@@ -116,4 +143,5 @@ EditPost = connect(
 // Hook our form up to the store
 export default reduxForm({
   form: 'EditPost',
-})(EditPost)
+  validate
+}, mapStateToProps)(EditPost)

@@ -1,8 +1,8 @@
 import {
   GET_POST_AND_COMMENTS_BY_ID,
+  EDIT_POST,
   VOTE_ON_POST,
-  VOTE_ON_COMMENT,
-  DELETE_POST
+  VOTE_ON_COMMENT
 } from '../actions';
 
 import { arrayToObject } from '../utils/helper';
@@ -39,11 +39,13 @@ export function currentPost(currentPostState = {}, action) {
           }
       }
 
-    case DELETE_POST :
-      const postToUpdate = payload.id;
+    case EDIT_POST :
+      const updatedTitle = payload.title;
+      const updatedBody = payload.body;
       return {
         ...currentPostState,
-        deleted: true
+            title: updatedTitle,
+            body: updatedBody
       }
 
     default : 
