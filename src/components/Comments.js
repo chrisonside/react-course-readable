@@ -4,6 +4,7 @@ import Vote from './Vote';
 import PropTypes from 'prop-types';
 import Timestamp from 'react-timestamp';
 import { convertToSeconds } from '../utils/helper';
+import '../styles/comments.css';
 
 class Comments extends Component {
 
@@ -15,16 +16,15 @@ class Comments extends Component {
       <div className="comments">
         {(comments !== null && comments.length > 0) && (
           <div>
-            <p className="comment__tip">There are currently {comments.length} comments about this post...</p>
+            <h2 className="comments__heading">Comments:</h2>
+            <p className="comments__tip comments__tip--posts-present">There are currently {comments.length} comments about this post...</p>
             <ul className="comments__list">
               {comments.map(comment => (
-                <li key={comment.id}>
-                  <h2 className='comment__title'>{comment.title}</h2>
-                  <p className='comment__body'>{comment.body}</p>
-                  <p className='comment__timestamp'><Timestamp time={convertToSeconds(`${comment.timestamp}`)} format='full' includeDay /></p>
-                  <p className='comment__author'>by {comment.author}</p>
-                  <div className='comment__votes'>
-                    Votes: {comment.voteScore}
+                <li key={comment.id} className="comments__item">
+                  <p className='comments__body'>{comment.body}</p>
+                  <p className='comments__details'><Timestamp time={convertToSeconds(`${comment.timestamp}`)} format='full' includeDay />, by {comment.author}</p>
+                  <div className='comments__votes'>
+                    <div className="comments__vote-score">Votes: {comment.voteScore}</div>
                     <Vote post={comment} />
                   </div>
                 </li>
@@ -33,7 +33,7 @@ class Comments extends Component {
           </div>
         )}
         {(comments === null) && (
-          <p className="comment__tip">No comments just yet... Be the first to comment!</p>
+          <p className="comments__tip">No comments just yet... Be the first to comment!</p>
         )}
       </div>
     );
@@ -50,7 +50,7 @@ function mapStateToProps( {currentPost} ) {
 
     const comments = currentPost.comments;
 
-    if (comments !== undefined) {
+    if (typeof comments !== 'undefined') {
       let objectKeys = [Object.keys(comments)],
         i = 0;
 
