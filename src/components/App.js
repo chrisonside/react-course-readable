@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Switch } from 'react-router-dom';
 import { Route } from 'react-router-dom';
 import ReactLoading from 'react-loading';
-import '../App.css';
+import '../styles/app.css';
 import AddPost from './AddPost';
 import EditPost from './EditPost';
 import PostList from './PostList';
