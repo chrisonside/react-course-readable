@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import '../styles/categories.css';
 
 import {
   getCategories,
@@ -19,14 +20,13 @@ class Categories extends Component {
   render() {
 
     const { categories } = this.props;
-    console.log(categories);
 
     return (
       <div className="categories">
         {Array.isArray(categories) && (
             <ul className="categories__list">
               {categories.map(cat => (
-                <li key={cat.name}>
+                <li key={cat.name} className="categories__item">
                   <Link
                     to={`/${cat.name}`}
                     className='categories__link'>
@@ -34,12 +34,12 @@ class Categories extends Component {
                   </Link>
                 </li>
               ))}
-              <li>
+              <li className="categories__item">
                 <Link
                   to={`/`}
                   className='categories__link'>
-                    Show all
-                  </Link>
+                    show all
+                </Link>
               </li>
             </ul>
           )}
