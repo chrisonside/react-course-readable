@@ -4,12 +4,16 @@
   text-decoration: none;
 }
 
+.posts__link--add { 
+  color: mediumseagreen;
+}
+
 .posts__link:hover {
   text-decoration: underline;
 }
 
 .posts__add-icon {
-  color: royalblue;
+  color: mediumseagreen;
   margin-left: 5px;
 }
 
@@ -46,6 +50,10 @@
 
 .post__votes {
   margin-bottom: 5px;
+}
+
+.post__votes--base {
+  margin-bottom: 20px;
 }
 
 .post__vote-score {
@@ -128,4 +136,40 @@
 
 .post__link--start {
   display: block;
+}
+
+.post__edit {
+  border: 2px solid orange;
+  background-color: orange;
+  margin-right: 20px;
+  padding: 10px 20px;
+  font-size: 19px;
+  line-height: 19px;
+  color: #fff;
+  transition: all 0.2s ease-in;
+  text-decoration: none;
+}
+
+.post__edit:hover {
+  background-color: #fff;
+  color: orange;
+  cursor: pointer;
+}
+
+.post__delete {
+  border: 2px solid #ff0033;
+  background-color: #ff0033;
+  margin-right: 0;
+  padding: 10px 20px;
+  font-size: 19px;
+  line-height: 19px;
+  color: #fff;
+  transition: all 0.2s ease-in;
+  text-decoration: none;
+}
+
+.post__delete:hover {
+  background-color: #fff;
+  color: #ff0033;
+  cursor: pointer;
 }
