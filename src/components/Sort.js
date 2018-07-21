@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import '../styles/sort.css';
 
 import {
   sortBy,
@@ -9,11 +10,10 @@ import {
 class Sort extends Component {
 
   /*
-    * Function handles user selecting shelf for a book via select options
+    * Function handles user interacting with sort button
   */
   handleOptionChange = (event) => {
     let selectedValue = event.target.value;
-    console.log(selectedValue);
     // Update Redux store
     this.props.sortBy({sortBy: selectedValue}, SORT_POSTS);
   };
@@ -25,12 +25,14 @@ class Sort extends Component {
     const sortingOptions = ['timestamp', 'voteScore'];
 
     return (
-      <div>
+      <div className="sort">
         <span className="sort__label">Sort posts by:</span>
-        <select className="sort__select" onChange={(event) => this.handleOptionChange(event)}>
-          <option value='timestamp'>date</option>
-          <option value='voteScore'>votes</option>
-        </select>
+        <div className="sort__button">
+          <select className="sort__select" onChange={(event) => this.handleOptionChange(event)}>
+            <option value='timestamp'>date</option>
+            <option value='voteScore'>votes</option>
+          </select>
+        </div>
       </div>
     );
   }
